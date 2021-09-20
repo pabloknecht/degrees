@@ -91,9 +91,45 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    # Initialise start node, frontier and path
+    start_node = Node(source, None, neighbors_for_person(source))
+    queueFrontier = QueueFrontier()
+    queueFrontier.add(start_node)
+    path = list()
+    explored = set()
 
-    # TODO
-    raise NotImplementedError
+    # Loop to find the shortest path
+    while(True):
+
+        # 1. If the frontier is empty, stop. There is no solution
+        if queueFrontier.empty():
+            return None
+
+        # 2. Remove a node from the frontier
+        node = queueFrontier.remove()
+
+        # 3. If the node contains the goal state, return the solution
+        if node.state == target:
+            return path
+        # Else, Expand the node and add resulting nodes to the frontier and add node to the explored set
+        else:
+            for row in node.action:
+                #check if node is the targuet
+                #check if the node is already in the frontier
+                #check if the node in the explored set
+                #define __eq__ and __hash__ of Node
+                queueFrontier.add(Node(row[1]))
+
+
+            return None
+
+
+
+
+
+
+
+    
 
 
 def person_id_for_name(name):

@@ -115,9 +115,8 @@ def shortest_path(source, target):
         else:
             for row in node.action:
                 #check if node is the targuet
-                #check if the node is already in the frontier
-                #check if the node in the explored set
-                #define __eq__ and __hash__ of Node
+                #check if the node is already in the frontier (frontier function)
+                #check if the node in the explored set (make explored set a frontier to compare)
                 queueFrontier.add(Node(row[1]))
 
 

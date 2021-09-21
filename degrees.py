@@ -92,17 +92,18 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
     # Initialise start node, frontier and path
-    start_node = Node(source, None, neighbors_for_person(source))
+    start_node = Node(source, None, None)
     queueFrontier = QueueFrontier()
     queueFrontier.add(start_node)
-    path = list()
-    explored = set()
+    explored = QueueFrontier()
+    path = []
 
     # Loop to find the shortest path
     while(True):
 
         # 1. If the frontier is empty, stop. There is no solution
         if queueFrontier.empty():
+            print("No solution")
             return None
 
         # 2. Remove a node from the frontier
@@ -110,27 +111,54 @@ def shortest_path(source, target):
 
         # 3. If the node contains the goal state, return the solution
         if node.state == target:
+            path = calculate_path(start_node, node, explored)
             return path
         # Else, Expand the node and add resulting nodes to the frontier and add node to the explored set
         else:
-            for row in node.action:
+            for row in neighbors_for_person(node.state):
+                next_node = Node(row[1], node.state, row[0])
+
                 #check if node is the targuet
-                #check if the node is already in the frontier (frontier function)
-                #check if the node in the explored set (make explored set a frontier to compare)
-                queueFrontier.add(Node(row[1]))
+                if next_node.state == target:
+                    path = calculate_path(start_node, next_node, explored)
+                    return path
+
+                #check if the node not in the explored / frotier 
+                elif not explored.contains_state(next_node.state) and not queueFrontier.contains_state(next_node.state):
+                    queueFrontier.add(next_node)
+                    explored.add(node)
 
 
-            return None
+def calculate_path(source_node, target_node, explored):
+    """
+    Returns the followed path to solution.
+    """
+    path = []
+    last_node = target_node
+    print("Target: " + target_node.state)
 
+    while(True):
+        # Take the action and state from last node and add to path
+        print("Tuple: ", (last_node.action, last_node.state))
+        path.append((last_node.action, last_node.state))
+        print("Path: ", path)
+        print("Last Node Parent: ", last_node.parent)
 
+        # Check if last node parent is the source node
+        if last_node.parent == source_node.state:
+            path.reverse()
+            return path
 
-
-
-
+        # Look for the parent node
+        for n in explored.frontier:
+            if n.state == last_node.parent:
+                parent = n 
+                break
+        
+        # Update last node
+        last_node = parent
 
     
-
-
 def person_id_for_name(name):
     """
     Returns the IMDB id for a person's name,

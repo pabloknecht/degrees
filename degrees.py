@@ -113,6 +113,7 @@ def shortest_path(source, target):
         if node.state == target:
             path = calculate_path(start_node, node, explored)
             return path
+            
         # Else, Expand the node and add resulting nodes to the frontier and add node to the explored set
         else:
             for row in neighbors_for_person(node.state):
@@ -139,10 +140,7 @@ def calculate_path(source_node, target_node, explored):
 
     while(True):
         # Take the action and state from last node and add to path
-        print("Tuple: ", (last_node.action, last_node.state))
         path.append((last_node.action, last_node.state))
-        print("Path: ", path)
-        print("Last Node Parent: ", last_node.parent)
 
         # Check if last node parent is the source node
         if last_node.parent == source_node.state:
